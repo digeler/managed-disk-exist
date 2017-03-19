@@ -1,0 +1,112 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmname": {
+      "type": "string",
+      "defaultValue": "testvm32",
+      "minLength": 1,
+      "metadata": {
+        "description": "The vm name "
+      }
+    },
+    "vmsize": {
+      "type": "string",
+      "defaultValue": "standard_A4",
+      "minLength": 1,
+      "metadata": {
+        "description": "size of the vm "
+      }
+    },
+    "vmOSDiskName": {
+      "type": "string",
+      "defaultValue": "memeber",
+      "minLength": 1,
+      "metadata": {
+        "description": "Existing disk name"
+      }
+    },
+    "nicid": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "/subscriptions/928f4e7e-2c28-4063-a56e-6f1e6f2bb73c/resourceGroups/domain/providers/Microsoft.Network/networkInterfaces/memeber724",
+      "metadata": {
+        "description": "exisiting nic"
+      }
+    },
+   
+    "osType": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "Windows",
+      "metadata": {
+        "description": "os type"
+      }
+    },
+   
+    "manageddiskid": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "/subscriptions/928f4e7e-2c28-4063-a56e-6f1e6f2bb73c/resourceGroups/DOMAIN/providers/Microsoft.Compute/disks/memeber",
+      "metadata": {
+        "description": "exisiting disk id"
+      }
+    }
+
+
+
+
+  },
+    "variables": {
+
+
+    },
+    "resources": [
+      {
+        "name": "[parameters('vmName')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-04-30-preview",
+        "dependsOn": [
+         
+        ],
+        "tags": {
+          "displayName": "[parameters('vmName')]"
+        },
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize')]"
+          
+          
+          },
+          "storageProfile": {
+
+            "osDisk": {
+              "osType": "[parameters('osType')]",
+              
+              "createOption": "Attach",
+              "managedDisk": {
+                "id": "[parameters('manageddiskid')]"
+               
+              },
+              "caching": "ReadWrite"
+            }
+
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[parameters('nicid')]"
+                
+              }
+            ]
+          }
+        },
+        "resources": [
+
+        ]
+      }
+
+    ]
+   
+  }
